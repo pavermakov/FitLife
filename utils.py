@@ -48,3 +48,28 @@ def get_bmi_result(bmi):
 def calculate_water_needed(weight):
     """Рассчитывает рекомендуемое количество воды в литрах"""
     return (weight * constants.WATER_ML_PER_KG) / constants.ML_PER_L
+
+
+def get_user_input(
+    parser,
+    min_val,
+    max_val,
+    initial_input_fn,
+    range_err_msg,
+    val_err_msg
+):
+    """Запрашивает ввод, преобразует его и проверяет диапазон"""
+    user_input = initial_input_fn()
+
+    while True:
+        try:
+            parsed_input = parser(user_input)
+        except ValueError:
+            user_input = input(val_err_msg)
+            continue
+
+        if not min_val <= parsed_input <= max_val:
+            user_input = input(range_err_msg.format(min_val, max_val))
+            continue
+
+        return parsed_input
